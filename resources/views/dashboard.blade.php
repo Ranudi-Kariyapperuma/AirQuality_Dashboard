@@ -124,4 +124,5 @@
             return aqiColors[getAqiCategory(aqi)];
         }
     </script>
+  
 @endpush 
