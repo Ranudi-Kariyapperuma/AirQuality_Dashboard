@@ -19,8 +19,11 @@
             </style>
         @endif
     </head>
-    <body >
-    <p class="text-7xl  flex p-6 lg:p-8 items-center  min-h-screen flex-col">Welcome</p>
+    <body>
+  <div class="flex justify-center p-6 lg:p-8">
+    <h1 class="text-4xl font-bold">Welcome to Dashboard</h1>
+  </div>
+  <p>Welcome</p>
+</body>
 
-    </body>
 </html>
