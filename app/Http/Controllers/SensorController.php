@@ -66,4 +66,9 @@ class SensorController extends Controller
 
         return response()->json($query->get());
     }
+
+    public function reports()
+    {
+        return view('reports');
+    }
 } 
