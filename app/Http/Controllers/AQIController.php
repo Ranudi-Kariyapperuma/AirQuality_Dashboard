@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Sensor;
 use App\Models\AirQualityReading;
 
 class AQIController extends Controller
@@ -41,9 +42,6 @@ class AQIController extends Controller
 
     private function randomColor()
     {
-        $r = rand(0, 255);
-        $g = rand(0, 255);
-        $b = rand(0, 255);
-        return "rgba($r, $g, $b, 1)";
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
 }

@@ -19,6 +19,8 @@ class AirQualityReading extends Model
         'o3',
         'so2'
     ];
+    
+    protected $dates = ['timestamp'];
 
     public function sensor()
     {
