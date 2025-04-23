@@ -3,48 +3,6 @@
 @section('title', 'Air Quality Dashboard')
 
 @section('content')
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid px-4">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            <span class="brand-icon">*</span>
-            BreatheSafe Colombo
-        </a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ url('/') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/reports') }}">Reports</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/about') }}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/contact') }}">Contact</a>
-                </li>
-            </ul>
-
-            <div class="d-flex align-items-center">
-                <div class="search-box me-3">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search">
-                </div>
-                <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
-                <div class="user-avatar ms-3">
-                    <img src="{{ asset('images/avatar.jpg') }}" alt="User Avatar">
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
-
 <div class="dashboard-container">
     <!-- Main Content -->
     <div class="content-wrapper">
@@ -77,66 +35,6 @@
 
 @push('styles')
 <style>
-/* Navigation Styles */
-.navbar {
-    background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    padding: 0.75rem 0;
-}
-
-.navbar-brand {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #1a1a1a;
-    display: flex;
-    align-items: center;
-}
-
-.brand-icon {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
-}
-
-.nav-link {
-    color: #4a4a4a;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-}
-
-.nav-link.active {
-    color: #007bff;
-}
-
-.search-box {
-    position: relative;
-    background: #f5f7fa;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-}
-
-.search-box input {
-    border: none;
-    background: none;
-    padding-left: 2rem;
-    width: 200px;
-    outline: none;
-}
-
-.search-box i {
-    position: absolute;
-    left: 1rem;
-    color: #666;
-}
-
-.user-avatar img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 /* Dashboard Styles */
 .dashboard-container {
     padding: 0;
@@ -248,10 +146,6 @@
 
     .map-section {
         height: calc(100vh - 220px);
-    }
-
-    .search-container {
-        width: 85%;
     }
 }
 </style>

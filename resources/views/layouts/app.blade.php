@@ -28,6 +28,19 @@
         }
         .navbar {
             margin-bottom: 20px;
+            background-color: #87CEEB !important; /* Light blue color */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand, .nav-link {
+            color: #2c3e50 !important; /* Darker text for better contrast */
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            color: #1a2634 !important;
+        }
+        .nav-link.active {
+            color: #1a2634 !important;
+            font-weight: 600;
         }
         .content {
             min-height: calc(100vh - 60px);
@@ -42,9 +55,12 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ route('dashboard') }}">Colombo Air Quality Dashboard</a>
+                <a class="navbar-brand" href="{{ route('dashboard') }}">
+                    <span class="brand-icon">*</span>
+                    BreatheSafe Colombo
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -53,16 +69,19 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ url('/dashboard') }}">Dashboard</a>
+                            <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/sensors') }}">Sensors</a>
+                            <a class="nav-link {{ request()->is('reports') ? 'active' : '' }}" href="{{ url('/reports') }}">Reports</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/reports') }}">Reports</a>
+                            <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                            <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('login') ? 'active' : '' }}" href="{{ url('/login') }}">Login</a>
                         </li>
                     </ul>
                 </div>
