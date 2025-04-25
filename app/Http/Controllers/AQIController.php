@@ -11,20 +11,21 @@ class AQIController extends Controller
     public function index()
     {
         $readings = AirQualityReading::with('sensor')
-            ->where('timestamp', '>=', now()->subDays(7))
-            ->orderBy('timestamp')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->orderBy('created_at')
             ->get();
 
         $grouped = $readings->groupBy('sensor_id');
         $chartData = [];
 
         foreach ($grouped as $sensorId => $sensorReadings) {
-            $sensor = $sensorReadings->first()->sensor->location ?? 'Unknown Sensor';
+            $sensor = optional($sensorReadings->first()?->sensor)->location ?? 'Unknown Sensor';
             $dataPoints = [];
 
             foreach ($sensorReadings as $reading) {
                 $dataPoints[] = [
-                    'x' => $reading->timestamp->format('Y-m-d H:i:s'),
+                    
+                    'x' => $reading->created_at->toIso8601String(),
                     'y' => $reading->aqi,
                 ];
             }
@@ -36,7 +37,7 @@ class AQIController extends Controller
                 'fill' => false,
             ];
         }
-
+        dd($chartData); 
         return view('aqi_chart', compact('chartData'));
     }
 

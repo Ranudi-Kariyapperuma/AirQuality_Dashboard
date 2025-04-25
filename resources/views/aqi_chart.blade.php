@@ -1,57 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Air Quality Chart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Index (Last 7 Days)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@1.0.0"></script>
 </head>
 <body>
-    <h2>Air Quality Index (Last 7 Days)</h2>
 
-    <canvas id="aqiChart" width="800" height="400"></canvas>
+    <h1>Air Quality Index (Last 7 Days)</h1>
 
-    <script>
-        const chartData = @json($chartData);
-
-        const ctx = document.getElementById('aqiChart').getContext('2d');
-        const aqiChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: chartData
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day',
-                            tooltipFormat: 'YYYY-MM-DD HH:mm'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Date & Time'
-                        }
+    <canvas id="aqiChart" width="400" height="200"></canvas>
+    
+<script>
+    var ctx = document.getElementById('aqiChart').getContext('2d');
+    var aqiChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [
+                @foreach ($chartData as $data)
+                    {
+                        label: "{{ $data['label'] }}",
+                        data: {!! json_encode($data['data']) !!},
+                        borderColor: "{{ $data['borderColor'] }}",
+                        fill: false
                     },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'AQI Value'
-                        }
+                @endforeach
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day', // You can use 'minute', 'hour', 'day', etc.
+                        tooltipFormat: 'll', // You can change this to suit the format you need
+                    },
+                    title: {
+                        display: true,
+                        text: 'Date'
                     }
                 },
-                plugins: {
-                    legend: {
+                y: {
+                    title: {
                         display: true,
-                        position: 'top'
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
+                        text: 'Air Quality Index (AQI)'
                     }
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
+
+
 </body>
 </html>
