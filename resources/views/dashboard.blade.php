@@ -34,6 +34,10 @@
             <h2 class="text-center mb-3">Join with Us and Measure the Air Quality in Your Neighborhood</h2>
             <p class="text-center">To connect and start measuring air quality, you'll need an air quality monitoring device and an internet connection.</p>
             
+            <div class="text-center mb-4">
+                <img src="{{ asset('images/air1.png') }}" alt="GAIA Kit Components" style="max-width:100%;height:auto;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            </div>
+
             <div class="setup-info mt-4">
                 <h3 class="text-center mb-3">How to Setup</h3>
                 <p class="text-center">
