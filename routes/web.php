@@ -6,7 +6,7 @@ use App\Http\Controllers\AQIController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\ContactController;
 
 
 /*
@@ -29,6 +29,9 @@ Route::get('/reports', [SensorController::class, 'reports'])->name('reports');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/aqi-chart', [AQIController::class, 'index'])->name('aqi.index');
+
+Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // API routes
 Route::prefix('api')->group(function () {
