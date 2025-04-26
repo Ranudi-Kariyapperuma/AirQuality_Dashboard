@@ -31,7 +31,18 @@
         </div>
     </div>
 </div>
+
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+    <a href="{{ route('aqi.index') }}">
+        <button style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            View AQI Chart
+        </button>
+    </a>
+</div>
+
 @endsection
+
+
 
 @push('styles')
 <style>
@@ -223,6 +234,7 @@
 </style>
 @endpush
 
+
 @push('scripts')
 <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
 <script>
@@ -370,4 +382,11 @@ legend.onAdd = function (map) {
 };
 legend.addTo(map);
 </script>
+<<<<<<< HEAD
 @endpush
+=======
+
+
+@endpush 
+
+>>>>>>> 12431bc53eb1ad32b2929408969a6428f8010cfa
