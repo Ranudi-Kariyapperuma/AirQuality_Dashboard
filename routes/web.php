@@ -42,10 +42,10 @@ Route::get('/', [SensorController::class, 'index'])->name('dashboard');
 Route::get('/reports', [SensorController::class, 'reports'])->name('reports');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/aqi-chart', [AQIController::class, 'index']);
+Route::get('/aqi-chart', [AQIController::class, 'showAqiChart']);
 Route::get('/export-aqi-data', [AqiDataExportController::class, 'exportToJson']);
 Route::get('/export/csv', [AqiDataExportController::class, 'exportToCsv']);
-Route::get('/aqi-chart', [AQIController::class, 'index'])->name('aqi.index');
+
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
