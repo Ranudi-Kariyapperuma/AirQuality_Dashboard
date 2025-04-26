@@ -5,6 +5,7 @@ use App\Http\Controllers\SensorController;
 use App\Http\Controllers\AQIController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\AqiDataExportController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 
@@ -41,6 +42,9 @@ Route::get('/', [SensorController::class, 'index'])->name('dashboard');
 Route::get('/reports', [SensorController::class, 'reports'])->name('reports');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/aqi-chart', [AQIController::class, 'index']);
+Route::get('/export-aqi-data', [AqiDataExportController::class, 'exportToJson']);
+Route::get('/export/csv', [AqiDataExportController::class, 'exportToCsv']);
 Route::get('/aqi-chart', [AQIController::class, 'index'])->name('aqi.index');
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
