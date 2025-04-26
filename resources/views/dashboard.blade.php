@@ -382,11 +382,4 @@ legend.onAdd = function (map) {
 };
 legend.addTo(map);
 </script>
-<<<<<<< HEAD
 @endpush
-=======
-
-
-@endpush 
-
->>>>>>> 12431bc53eb1ad32b2929408969a6428f8010cfa
