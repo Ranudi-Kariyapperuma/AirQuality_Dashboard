@@ -75,7 +75,7 @@
             </div>
         @endif
 
-        <form method="POST" action="/login" class="space-y-4">
+        <form method="pOST" action="/login" class="space-y-4">
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700">Username</label>
