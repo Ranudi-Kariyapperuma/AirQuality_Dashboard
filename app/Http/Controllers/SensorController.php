@@ -71,4 +71,18 @@ class SensorController extends Controller
     {
         return view('reports');
     }
+    public function dashboard()
+    {
+        $sensors = Sensor::all();
+    
+    try {
+        // Get the latest air quality reading for each sensor
+        $airQualityReadings = AirQualityReading::all();
+    } catch (\Exception $e) {
+        // If there's an error, set to empty array
+        $airQualityReadings = [];
+    }
+    
+    return view('dashboard', compact('sensors', 'airQualityReadings'));
+    }
 } 

@@ -174,6 +174,81 @@
         </div>
     </section>
 
+    <!-- Team Members Section -->
+    <section class="team-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Team</h2>
+            <div class="row">
+                <!-- Team Member 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-200 text-center">
+                        <img src="{{ asset('images/team/member1.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
+                        <div class="card-body">
+                            <h5 class="card-title">Sanuda De silva</h5>
+                            <p class="card-text">Computer Science</p>
+                            <p class="card-text">Batch 23.1</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-200 text-center">
+                        <img src="{{ asset('images/team/member2.png') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
+                        <div class="card-body">
+                            <h5 class="card-title">Mandinu Balsooriya</h5>
+                            <p class="card-text">Computer Science</p>
+                            <p class="card-text">Batch 23.1</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-200 text-center">
+                        <img src="{{ asset('images/team/member3.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
+                        <div class="card-body">
+                            <h5 class="card-title">Devinda Thilina</h5>
+                            <p class="card-text">Computer Science</p>
+                            <p class="card-text">Batch 23.1</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-200 text-center">
+                        <img src="{{ asset('images/team/member4.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
+                        <div class="card-body">
+                            <h5 class="card-title">Ranudi Kariyapperuma</h5>
+                            <p class="card-text">Technology Management</p>
+                            <p class="card-text">Batch 23.1</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-200 text-center">
+                        <img src="{{ asset('images/team/member5.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
+                        <div class="card-body">
+                            <h5 class="card-title">Naduni Kodikara</h5>
+                            <p class="card-text">Technology Management</p>
+                            <p class="card-text">Batch 23.1</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-200 text-center">
+                        <img src="{{ asset('images/team/member6.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width:  200px; height: 200px;" alt="Team Member">
+                        <div class="card-body">
+                            <h5 class="card-title">Denethmi Aththanayaka</h5>
+                            <p class="card-text">Computer Science</p>
+                            <p class="card-text">Batch 23.1</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-dark text-white mt-5 py-4">
             <div class="container">
                 <div class="row align-items-center">

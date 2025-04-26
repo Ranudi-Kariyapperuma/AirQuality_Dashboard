@@ -24,13 +24,13 @@ class Sensor extends Model
     }
 
     public function latestReading()
-    {
-        return $this->hasOne(AirQualityReading::class)->latest();
-    }
+{
+    return $this->hasOne(AirQualityReading::class, 'sensor_id')->latest();
+}
 
     public function airQualityReadings()
-    {
-        return $this->hasMany(AirQualityReading::class);
-    }
+{
+    return $this->hasMany(AirQualityReading::class, 'sensor_id');
+}
 
 } 
