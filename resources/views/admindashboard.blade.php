@@ -163,15 +163,25 @@
 <body>
     <div class="sidebar">
         <div class="user-info">
-            <div style="font-weight:700; font-size:1.2rem;">{{ session('username') }}</div>
-            <div class="role">Administrator</div>
+            <h4>Admin Dashboard</h4>
+            <span class="role">Administrator</span>
         </div>
         <nav>
-            <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="#"><i class="fas fa-microchip"></i> Sensors</a>
-            <a href="#"><i class="fas fa-bell"></i> Alerts</a>
-            <a href="#"><i class="fas fa-users"></i> Users</a>
-            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="{{ route('alert-configuration') }}" class="{{ request()->routeIs('alert-configuration') ? 'active' : '' }}">
+                <i class="fas fa-bell"></i> Alert Configuration
+            </a>
+            <a href="{{ route('system-configuration') }}" class="{{ request()->routeIs('system-configuration') ? 'active' : '' }}">
+                <i class="fas fa-cog"></i> System Configuration
+            </a>
+            <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
+                <i class="fas fa-users"></i> User Management
+            </a>
+            <a href="{{ route('admin.reports') }}" class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">
+                <i class="fas fa-chart-bar"></i> Reports
+            </a>
         </nav>
         <form method="POST" action="{{ route('logout') }}" style="width:100%;">
             @csrf

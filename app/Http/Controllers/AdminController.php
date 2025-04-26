@@ -74,4 +74,63 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Error adding sensor: ' . $e->getMessage());
         }
     }
+
+    public function alertConfiguration()
+    {
+        $alertLevels = [
+            ['name' => 'Good', 'min_aqi' => 0, 'max_aqi' => 50, 'color' => '#00e400'],
+            ['name' => 'Moderate', 'min_aqi' => 51, 'max_aqi' => 100, 'color' => '#ffff00'],
+            ['name' => 'Unhealthy for Sensitive Groups', 'min_aqi' => 101, 'max_aqi' => 150, 'color' => '#ff7e00'],
+            ['name' => 'Unhealthy', 'min_aqi' => 151, 'max_aqi' => 200, 'color' => '#ff0000'],
+            ['name' => 'Very Unhealthy', 'min_aqi' => 201, 'max_aqi' => 300, 'color' => '#8f3f97'],
+            ['name' => 'Hazardous', 'min_aqi' => 301, 'max_aqi' => 500, 'color' => '#7e0023']
+        ];
+
+        return view('alert_configuration', compact('alertLevels'));
+    }
+
+    public function storeAlertConfiguration(Request $request)
+    {
+        $validated = $request->validate([
+            'levels.*.min_aqi' => 'required|integer|min:0',
+            'levels.*.max_aqi' => 'required|integer|min:0',
+            'levels.*.color' => 'required|string',
+            'visual_alerts' => 'boolean'
+        ]);
+
+        // TODO: Store the configuration in the database
+        // For now, we'll just redirect back with a success message
+        return redirect()->back()->with('success', 'Alert configuration saved successfully!');
+    }
+
+    public function systemConfiguration()
+    {
+        return view('system_configuration');
+    }
+
+    public function storeSystemConfiguration(Request $request)
+    {
+        $validated = $request->validate([
+            'database_url' => 'required|string',
+            'timezone' => 'required|string|timezone',
+            'map_latitude' => 'required|numeric|between:-90,90',
+            'map_longitude' => 'required|numeric|between:-180,180',
+            'debug_mode' => 'boolean'
+        ]);
+
+        // TODO: Store the configuration in the database
+        // For now, we'll just redirect back with a success message
+        return redirect()->back()->with('success', 'System configuration saved successfully!');
+    }
+
+    public function userManagement()
+    {
+        $users = \App\Models\User::all();
+        return view('admin.users', compact('users'));
+    }
+
+    public function reports()
+    {
+        return view('admin.reports');
+    }
 }

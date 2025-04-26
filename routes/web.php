@@ -22,6 +22,19 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/admin/dashboard', [AdminController::class, 'admindashboard'])->name('admin.dashboard');
 Route::get('/admin/sensors/create', [AdminController::class, 'createSensor'])->name('sensors.create');
 Route::post('/admin/sensors', [AdminController::class, 'storeSensor'])->name('sensors.store');
+
+// Alert Configuration Routes
+Route::get('/admin/alert-configuration', [AdminController::class, 'alertConfiguration'])->name('alert-configuration');
+Route::post('/admin/alert-configuration', [AdminController::class, 'storeAlertConfiguration'])->name('alert-configuration.store');
+
+// System Configuration Routes
+Route::get('/admin/system-configuration', [AdminController::class, 'systemConfiguration'])->name('system-configuration');
+Route::post('/admin/system-configuration', [AdminController::class, 'storeSystemConfiguration'])->name('system-configuration.store');
+
+// User Management Routes
+Route::get('/admin/users', [AdminController::class, 'userManagement'])->name('admin.users');
+Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
+
 Route::get('/forget-password', [LoginController::class, 'forgetPassword']);
 // Public routes
 Route::get('/', [SensorController::class, 'index'])->name('dashboard');
