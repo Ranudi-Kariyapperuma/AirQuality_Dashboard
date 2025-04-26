@@ -10,7 +10,7 @@
                 extend: {
                     colors: {
                         skycustom: '#87CEEB',
-                        Deepdark: '#274472'
+                        Deepdark: '#274473'
                     }
                 }
             }
