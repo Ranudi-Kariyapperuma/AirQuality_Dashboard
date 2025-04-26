@@ -230,7 +230,7 @@
                 <!-- Team Member 6-->
                 <div class="col-md-4 mb-4">
                     <div class="card h-200 text-center">
-                        <img src="{{ asset('images/team/member5.png') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
+                        <img src="{{ asset('images/team/member5.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
                         <div class="card-body">
                             <h5 class="card-title">Naduni Kodikara</h5>
                             <p class="card-text">Technology Management</p>
