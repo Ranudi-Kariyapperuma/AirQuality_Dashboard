@@ -145,41 +145,77 @@
     font-size: 0.9rem;
     color: #666;
 }
+
+.sensor-marker {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 10px;
+    min-width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
 .popup-content {
-    min-width: 250px;
-    padding: 5px;
+    padding: 10px;
 }
 
-.popup-content h5 {
-    margin-top: 0;
+.popup-title {
+    font-weight: bold;
+    font-size: 16px;
     margin-bottom: 5px;
-    font-weight: 600;
 }
 
-.aqi-value {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 2px;
-}
-
-.aqi-category {
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-.pollutant-details {
-    font-size: 0.9rem;
+.popup-description {
+    font-size: 14px;
     margin-bottom: 10px;
 }
 
-.pollutant-details p {
-    margin: 3px 0;
+.popup-readings {
+    font-size: 14px;
+    margin-top: 10px;
 }
 
-.chart-container {
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
+.popup-readings table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.popup-readings th, .popup-readings td {
+    padding: 4px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.popup-aqi {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    color: white;
+}
+
+.aqi-legend {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    line-height: 1.8;
+}
+
+.aqi-legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+    border-radius: 2px;
 }
 
 @media (max-width: 768px) {
@@ -202,7 +238,7 @@
 @push('scripts')
 <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
 <script>
-   // Debug: Log when script starts
+// Debug: Log when script starts
 console.log("Map script started");
 
 // Initialize the map centered on Colombo
@@ -215,6 +251,90 @@ console.log("Map initialized");
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+
+// Get sensor and air quality data from PHP
+const sensors = @json($sensors);
+const airQualityReadings = @json($airQualityReadings ?? []);
+
+// AQI color scale and functions
+function getAqiCategory(aqi) {
+    if (aqi <= 50) return 'Good';
+    if (aqi <= 100) return 'Moderate';
+    if (aqi <= 150) return 'Unhealthy for Sensitive Groups';
+    if (aqi <= 200) return 'Unhealthy';
+    if (aqi <= 300) return 'Very Unhealthy';
+    return 'Hazardous';
+}
+
+function getAqiColor(aqi) {
+    if (aqi <= 50) return '#00e400'; // Green - Good
+    if (aqi <= 100) return '#ffff00'; // Yellow - Moderate
+    if (aqi <= 150) return '#ff7e00'; // Orange - Unhealthy for Sensitive Groups
+    if (aqi <= 200) return '#ff0000'; // Red - Unhealthy
+    if (aqi <= 300) return '#99004c'; // Purple - Very Unhealthy
+    return '#7e0023'; // Maroon - Hazardous
+}
+
+// Create markers for each sensor
+sensors.forEach(sensor => {
+    // Find corresponding air quality reading for this sensor by matching sensor.id with reading.sensor_id
+    const reading = airQualityReadings.find(r => r.sensor_id == sensor.id);
+    
+    // Get the AQI color based on reading
+    const aqi = reading ? reading.aqi : null;
+    const aqiColor = aqi ? getAqiColor(aqi) : '#808080';
+    const aqiCategory = aqi ? getAqiCategory(aqi) : 'No Data';
+    
+    // Create a custom HTML element for the marker
+    const markerHtml = `<div class="sensor-marker" style="background-color: ${aqiColor}">${sensor.sensor_id}</div>`;
+    const customIcon = L.divIcon({
+        html: markerHtml,
+        className: '',
+        iconSize: [80, 40],
+        iconAnchor: [40, 20]
+    });
+
+    // Create marker with the custom icon
+    const marker = L.marker([sensor.latitude, sensor.longitude], {
+        icon: customIcon
+    }).addTo(map);
+
+    // Create popup content
+    let popupContent = `
+        <div class="popup-content">
+            <div class="popup-title">${sensor.name}</div>
+            <div class="popup-description">${sensor.description}</div>
+    `;
+    
+    if (reading) {
+        popupContent += `
+            <div class="popup-aqi" style="background-color: ${aqiColor}">AQI: ${reading.aqi} (${aqiCategory})</div>
+            <div class="popup-readings">
+                <table>
+                    <tr><th>Pollutant</th><th>Value</th></tr>
+                    <tr><td>PM2.5</td><td>${reading.pm25.toFixed(1)} μg/m³</td></tr>
+                    <tr><td>PM10</td><td>${reading.pm10.toFixed(1)} μg/m³</td></tr>
+                    <tr><td>CO</td><td>${reading.co.toFixed(1)} ppm</td></tr>
+                    <tr><td>NO₂</td><td>${reading.no2.toFixed(1)} ppb</td></tr>
+                    <tr><td>O₃</td><td>${reading.o3.toFixed(1)} ppb</td></tr>
+                    <tr><td>SO₂</td><td>${reading.so2.toFixed(1)} ppb</td></tr>
+                    <tr><td>Last Updated</td><td>${new Date(reading.created_at).toLocaleString()}</td></tr>
+                </table>
+            </div>
+        `;
+    } else {
+        popupContent += `
+            <div class="popup-aqi" style="background-color: #808080">No Data Available</div>
+        `;
+    }
+    
+    popupContent += `</div>`;
+
+    // Bind popup to marker
+    marker.bindPopup(popupContent, {
+        maxWidth: 30000
+    });
+});
 
 // Custom zoom controls
 document.getElementById('zoomIn').addEventListener('click', () => {
@@ -233,7 +353,7 @@ document.getElementById('locate').addEventListener('click', () => {
     }
 });
 
-// AQI color scale
+// Add legend
 const aqiColors = {
     'Good': '#00e400',
     'Moderate': '#ffff00',
@@ -244,260 +364,29 @@ const aqiColors = {
     'No Data': '#808080'
 };
 
-// Add legend
 const legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
     const div = L.DomUtil.create('div', 'aqi-legend');
     let labels = [];
+    
+    div.innerHTML = '<strong>Air Quality Index</strong><br>';
+    
     for (const [category, color] of Object.entries(aqiColors)) {
         labels.push(
             `<i style="background:${color}"></i> ${category}`
         );
     }
-    div.innerHTML = labels.join('<br>');
+    
+    div.innerHTML += labels.join('<br>');
     return div;
 };
 legend.addTo(map);
-
-console.log("Fetching sensor data...");
-
-// Fetch sensors and add markers
-fetch('/api/sensors')
-    .then(response => {
-        console.log("API Response status:", response.status);
-        if (!response.ok) {
-            throw new Error(`API response error: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(sensors => {
-        console.log("Received sensors data:", sensors);
-        
-        if (!sensors || sensors.length === 0) {
-            console.warn("No sensors data received");
-            return;
-        }
-        
-        sensors.forEach(sensor => {
-            console.log("Processing sensor:", sensor.name);
-            
-            // Add a simple marker for testing
-            const testMarker = L.marker([sensor.latitude, sensor.longitude])
-                .addTo(map)
-                .bindPopup(`Test marker: ${sensor.name}`);
-            
-            const color = sensor.latest_reading 
-                ? getAqiColor(sensor.latest_reading.aqi)
-                : aqiColors['No Data'];
-            
-            console.log(`Sensor ${sensor.name} - Color: ${color}`);
-            
-            const marker = L.circleMarker(
-                [sensor.latitude, sensor.longitude],
-                {
-                    radius: 10,
-                    fillColor: color,
-                    color: '#000',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                }
-            ).addTo(map);
-
-            marker.on('click', function() {
-                console.log(`Marker clicked: ${sensor.name}`);
-                
-                if (sensor.latest_reading) {
-                    // First show basic info popup
-                    const popupContent = `
-                        <div class="popup-content">
-                            <h5>${sensor.name}</h5>
-                            <p class="aqi-value">AQI: ${sensor.latest_reading.aqi}</p>
-                            <p class="aqi-category">${getAqiCategory(sensor.latest_reading.aqi)}</p>
-                            <div class="pollutant-details">
-                                <p>PM2.5: ${sensor.latest_reading.pm25 || sensor.latest_reading.pm2_5} µg/m³</p>
-                                <p>PM10: ${sensor.latest_reading.pm10} µg/m³</p>
-                                <p>Last updated: ${new Date(sensor.latest_reading.reading_time || sensor.latest_reading.created_at).toLocaleString()}</p>
-                            </div>
-                            <div class="chart-container" style="height: 150px; width: 100%;">
-                                <canvas id="chart-${sensor.id}"></canvas>
-                            </div>
-                        </div>
-                    `;
-                    
-                    marker.bindPopup(popupContent).openPopup();
-                    
-                    // Then fetch historical data and create chart
-                    fetch(`/api/sensors/${sensor.id}/history?hours=24`)
-                        .then(response => response.json())
-                        .then(historyData => {
-                            console.log(`Received history data for ${sensor.name}:`, historyData);
-                            createChart(`chart-${sensor.id}`, historyData);
-                        })
-                        .catch(err => console.error(`Error fetching history for ${sensor.name}:`, err));
-                } else {
-                    marker.bindPopup(`
-                        <div class="popup-content">
-                            <h5>${sensor.name}</h5>
-                            <p>No readings available</p>
-                        </div>
-                    `).openPopup();
-                }
-            });
-        });
-    })
-    .catch(error => {
-        console.error("Error fetching sensors:", error);
-    });
-
-function getAqiCategory(aqi) {
-    if (aqi <= 50) return 'Good';
-    if (aqi <= 100) return 'Moderate';
-    if (aqi <= 150) return 'Unhealthy for Sensitive Groups';
-    if (aqi <= 200) return 'Unhealthy';
-    if (aqi <= 300) return 'Very Unhealthy';
-    return 'Hazardous';
-}
-
-function getAqiColor(aqi) {
-    if (aqi <= 50) return '#00e400'; // Green - Good
-    if (aqi <= 100) return '#ffff00'; // Yellow - Moderate
-    if (aqi <= 150) return '#ff7e00'; // Orange - Unhealthy for Sensitive Groups
-    if (aqi <= 200) return '#ff0000'; // Red - Unhealthy
-    if (aqi <= 300) return '#99004c'; // Purple - Very Unhealthy
-    return '#7e0023'; // Maroon - Hazardous
-}
-// Add test markers with hardcoded data
-function addTestMarkers() {
-    console.log("Adding test markers");
-    
-    const testData = [
-        {
-            name: "City Center",
-            latitude: 6.9271, 
-            longitude: 79.8612,
-            aqi: 75,
-            pm25: 35.5,
-            pm10: 45.2
-        },
-        {
-            name: "Port Area",
-            latitude: 6.9400, 
-            longitude: 79.8500,
-            aqi: 120,
-            pm25: 50.2,
-            pm10: 75.8
-        },
-        {
-            name: "Residential Zone",
-            latitude: 6.9100, 
-            longitude: 79.8700,
-            aqi: 45,
-            pm25: 20.3,
-            pm10: 35.1
-        },
-        // Additional areas with different AQI levels to show color range
-        {
-            name: "Dehiwala",
-            latitude: 6.8504,
-            longitude: 79.8650,
-            aqi: 25,
-            pm25: 10.2,
-            pm10: 22.5
-        },
-        {
-            name: "Malabe",
-            latitude: 6.9057,
-            longitude: 79.9576,
-            aqi: 160,
-            pm25: 62.1,
-            pm10: 88.3
-        },
-        {
-            name: "Mount Lavinia",
-            latitude: 6.8378,
-            longitude: 79.8629,
-            aqi: 55,
-            pm25: 25.4,
-            pm10: 38.7
-        },
-        {
-            name: "Kolonnawa",
-            latitude: 6.9333,
-            longitude: 79.8889,
-            aqi: 210,
-            pm25: 87.3,
-            pm10: 110.5
-        },
-        {
-            name: "Kotte",
-            latitude: 6.8903,
-            longitude: 79.9034,
-            aqi: 95,
-            pm25: 42.8,
-            pm10: 58.4
-        },
-        {
-            name: "Homagama",
-            latitude: 6.8431,
-            longitude: 80.0025,
-            aqi: 310,
-            pm25: 112.5,
-            pm10: 165.2
-        },
-        {
-            name: "Nugegoda",
-            latitude: 6.8524,
-            longitude: 79.8976,
-            aqi: 45, 
-            pm25: 22.5,
-            pm10: 30.2,
-        }
-        
-    ];
-    
-    
-    testData.forEach(location => {
-        const color = getAqiColor(location.aqi);
-        
-        const marker = L.circleMarker(
-            [location.latitude, location.longitude],
-            {
-                radius: 10,
-                fillColor: color,
-                color: '#000',
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            }
-        ).addTo(map);
-        
-        marker.bindPopup(`
-            <div class="popup-content">
-                <h5>${location.name}</h5>
-                <p class="aqi-value">AQI: ${location.aqi}</p>
-                <p class="aqi-category">${getAqiCategory(location.aqi)}</p>
-                <div class="pollutant-details">
-                    <p>PM2.5: ${location.pm25} µg/m³</p>
-                    <p>PM10: ${location.pm10} µg/m³</p>
-                    <p>Last updated: ${new Date().toLocaleString()}</p>
-                </div>
-            </div>
-        `);
-    });
-}
-
-// Call this function after map initialization
-addTestMarkers();
-
-    // Handle search functionality
-    const searchInput = document.querySelector('.location-search');
-    searchInput.addEventListener('input', function(e) {
-        // Add your search logic here
-        console.log('Searching for:', e.target.value);
-    });
 </script>
+<<<<<<< HEAD
+@endpush
+=======
 
 
 @endpush 
 
+>>>>>>> 12431bc53eb1ad32b2929408969a6428f8010cfa

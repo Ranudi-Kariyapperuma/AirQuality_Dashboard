@@ -36,3 +36,4 @@ Route::prefix('api')->group(function () {
     Route::get('/sensors/{sensor}/readings', [SensorController::class, 'getReadings']);
     
 });
+Route::get('/dashboard', [SensorController::class, 'dashboard'])->name('dashboard');
