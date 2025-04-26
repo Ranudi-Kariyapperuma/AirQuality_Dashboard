@@ -18,14 +18,17 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/admin/dashboard', [AdminController::class, 'admindashboard']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/admin/dashboard', [AdminController::class, 'admindashboard'])->name('admin.dashboard');
+Route::get('/admin/sensors/create', [AdminController::class, 'createSensor'])->name('sensors.create');
+Route::post('/admin/sensors', [AdminController::class, 'storeSensor'])->name('sensors.store');
 Route::get('/forget-password', [LoginController::class, 'forgetPassword']);
 // Public routes
 Route::get('/', [SensorController::class, 'index'])->name('dashboard');
 Route::get('/reports', [SensorController::class, 'reports'])->name('reports');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/aqi-chart', [AQIController::class, 'index']);
+Route::get('/aqi-chart', [AQIController::class, 'index'])->name('aqi.index');
 
 // API routes
 Route::prefix('api')->group(function () {
