@@ -202,8 +202,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Team Member 3 -->
+                
                 <div class="col-md-4 mb-4">
                     <div class="card h-200 text-center">
                         <img src="{{ asset('images/team/member3.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
@@ -215,7 +214,6 @@
                     </div>
                 </div>
 
-                <!-- Team Member 4 -->
                 <div class="col-md-4 mb-4">
                     <div class="card h-200 text-center">
                         <img src="{{ asset('images/team/member4.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
@@ -227,7 +225,6 @@
                     </div>
                 </div>
 
-                <!-- Team Member 6-->
                 <div class="col-md-4 mb-4">
                     <div class="card h-200 text-center">
                         <img src="{{ asset('images/team/member5.jpg') }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 200px; height: 200px;" alt="Team Member">
