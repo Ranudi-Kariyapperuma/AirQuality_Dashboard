@@ -286,13 +286,7 @@ const sensors = @json($sensors);
 const airQualityReadings = @json($airQualityReadings ?? []);
 
 // AQI color scale and functions
-function getAqiCategory(aqi) {
-    if (aqi <= 50) return 'Good';
-    if (aqi <= 100) return 'Moderate';
-    if (aqi <= 150) return 'Unhealthy for Sensitive Groups';
-    if (aqi <= 200) return 'Unhealthy';
-    if (aqi <= 300) return 'Very Unhealthy';
-    return 'Hazardous';
+
 }
 
 function getAqiColor(aqi) {
