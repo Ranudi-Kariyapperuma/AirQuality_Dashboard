@@ -8,7 +8,7 @@
     <div class="content-wrapper">
         <div class="dashboard-header">
             <h1>Air Quality Dashboard</h1>
-            <p class="subtitle">Real-time monitoring of Colombo's air quality</p>
+            <p class="subtitle">Real-time monitoring of Colombo's air Quality</p>
         </div>
 
         <!-- Map Section -->
