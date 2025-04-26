@@ -67,7 +67,7 @@
 
     
     <div class="w-full max-w-sm p-8 bg-white rounded-2xl shadow-lg mx-auto mt-24">
-        <h2 class="text-2xl font-bold text-center text-Deepdark mb-6">Welcome to BreatheSafe Colombo</h2>
+        <h2 class="text-2xl font-bold text-center text-Deepdark mb-6">welcome to BreatheSafe Colombo</h2>
 
         @if(session('error'))
             <div class="bg-red-100 text-red-600 text-sm p-3 rounded mb-4">
