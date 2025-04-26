@@ -29,6 +29,31 @@
             </div>
             <p class="refresh-text">Data refreshes every 5 minutes</p>
         </div>
+        <!-- Join with Us Section -->
+        <div class="join-us-section mt-5 p-4 bg-light rounded shadow">
+            <h2 class="text-center mb-3">Join with Us and Measure the Air Quality in Your Neighborhood</h2>
+            <p class="text-center">To connect and start measuring air quality, you'll need an air quality monitoring device and an internet connection.</p>
+            
+            <div class="setup-info mt-4">
+                <h3 class="text-center mb-3">How to Setup</h3>
+                <p class="text-center">
+                    Follow the detailed setup guide available <a href="https://aqicn.org/gaia/a18/" target="_blank" class="text-primary">here</a>.
+                </p>
+            </div>
+
+            <div class="learn-more mt-4 text-center">
+                <h3 class="mb-3">Want to Know More?</h3>
+                <p>
+                    Discover more about air quality monitoring on the <a href="https://aqicn.org/gaia/overview/" target="_blank" class="text-primary">GAIA Overview Page</a>.
+                </p>
+            </div>
+
+            <div class="learn-more mt-4 text-center">
+                <h3 class="mb-3">How to buy the it</h3>
+                <p>
+                     <a href="https://aqicn.org/gaia/overview/" target="_blank" class="text-primary">GAIA Overview Page</a>.
+                </p>
+            </div>
     </div>
 </div>
 
