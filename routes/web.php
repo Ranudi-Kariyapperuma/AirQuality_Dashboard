@@ -5,6 +5,7 @@ use App\Http\Controllers\SensorController;
 use App\Http\Controllers\AQIController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\AdminController;
 
 
 
@@ -17,6 +18,7 @@ use App\Http\Controllers\PageController;
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/admin/dashboard', [AdminController::class, 'admindashboard']);
 Route::get('/forget-password', [LoginController::class, 'forgetPassword']);
 // Public routes
 Route::get('/', [SensorController::class, 'index'])->name('dashboard');

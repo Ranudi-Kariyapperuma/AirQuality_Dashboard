@@ -16,9 +16,13 @@ class LoginController extends Controller
     {
         $user = DB::table('users')->where('username', $request->username)->first();
 
-        // Compare plain text password
         if ($user && $request->password === $user->password) {
-            return "Login Successful. Welcome, {$user->username}!";
+            if ($user->username === 'admin') {
+                // Pass the username to the dashboard view
+                return view('admindashboard', ['username' => $user->username]);
+            } else {
+                return back()->with('error', 'Access denied. Only admin can access the dashboard.');
+            }
         } else {
             return back()->with('error', 'Invalid username or password');
         }
