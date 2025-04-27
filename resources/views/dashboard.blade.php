@@ -53,7 +53,7 @@
             </div>
 
             <div class="learn-more mt-4 text-center">
-                <h3 class="mb-3">How to buy the it</h3>
+                <h3 class="mb-3">How to buy it</h3>
                 <p>
                      <a href="https://aqicn.org/gaia/overview/" target="_blank" class="text-primary">GAIA Overview Page</a>.
                 </p>
