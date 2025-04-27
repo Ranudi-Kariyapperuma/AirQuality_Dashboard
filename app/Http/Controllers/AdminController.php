@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\UserRole;
 
 class AdminController extends Controller
 {
@@ -123,10 +126,110 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'System configuration saved successfully!');
     }
 
+    // User Management Methods
     public function userManagement()
     {
-        $users = \App\Models\User::all();
-        return view('admin.users', compact('users'));
+        // Get all users with their roles
+        $users = UserRole::all();
+        
+        return view('user_management', compact('users'));
+    }
+    
+    public function createUser()
+    {
+        $roles = ['MonitoringAdmin', 'WebMaster'];
+        return view('create_user', compact('roles'));
+    }
+    
+    public function storeUser(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => 'required|string|max:255|unique:user_roles',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:MonitoringAdmin,WebMaster',
+        ]);
+        
+        try {
+            UserRole::create([
+                'username' => $validated['username'],
+                'password' => Hash::make($validated['password']),
+                'role' => $validated['role'],
+            ]);
+            
+            return redirect()->route('users')->with('success', 'User added successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error adding user: ' . $e->getMessage());
+        }
+    }
+    
+    public function editUser($id)
+    {
+        $user = UserRole::findOrFail($id);
+        $roles = ['MonitoringAdmin', 'WebMaster'];
+        
+        return view('edit_user', compact('user', 'roles'));
+    }
+    
+    public function updateUser(Request $request, $id)
+    {
+        $user = UserRole::findOrFail($id);
+        
+        $validated = $request->validate([
+            'username' => 'required|string|max:255|unique:user_roles,username,' . $id,
+            'role' => 'required|in:MonitoringAdmin,WebMaster',
+            'password' => 'nullable|string|min:8',
+        ]);
+        
+        try {
+            $user->username = $validated['username'];
+            $user->role = $validated['role'];
+            
+            if (!empty($validated['password'])) {
+                $user->password = Hash::make($validated['password']);
+            }
+            
+            $user->save();
+            
+            return redirect()->route('users')->with('success', 'User updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error updating user: ' . $e->getMessage());
+        }
+    }
+    
+    public function deleteUser($id)
+    {
+        $user = UserRole::findOrFail($id);
+        
+        try {
+            $user->delete();
+            return redirect()->route('users')->with('success', 'User deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting user: ' . $e->getMessage());
+        }
+    }
+    
+    public function resetUserPassword($id)
+    {
+        $user = UserRole::findOrFail($id);
+        return view('reset_password', compact('user'));
+    }
+    
+    public function updateUserPassword(Request $request, $id)
+    {
+        $user = UserRole::findOrFail($id);
+        
+        $validated = $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        
+        try {
+            $user->password = Hash::make($validated['password']);
+            $user->save();
+            
+            return redirect()->route('admin.users')->with('success', 'Password reset successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error resetting password: ' . $e->getMessage());
+        }
     }
 
     public function reports()
