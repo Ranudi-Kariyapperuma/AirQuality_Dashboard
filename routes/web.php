@@ -33,7 +33,15 @@ Route::get('/admin/system-configuration', [AdminController::class, 'systemConfig
 Route::post('/admin/system-configuration', [AdminController::class, 'storeSystemConfiguration'])->name('system-configuration.store');
 
 // User Management Routes
-Route::get('/admin/users', [AdminController::class, 'userManagement'])->name('admin.users');
+Route::get('/users', [AdminController::class, 'userManagement'])->name('admin.users');
+Route::get('/users/create', [AdminController::class, 'createUser'])->name('create_user');
+Route::post('/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+Route::get('/users/{id}/reset-password', [AdminController::class, 'resetUserPassword'])->name('admin.users.reset-password');
+Route::put('/users/{id}/password', [AdminController::class, 'updateUserPassword'])->name('admin.users.update-password');
+
 Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
 
 Route::get('/forget-password', [LoginController::class, 'forgetPassword']);
