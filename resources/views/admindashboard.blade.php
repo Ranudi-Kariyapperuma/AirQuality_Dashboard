@@ -139,6 +139,18 @@
             min-width: 70px;
             text-align: right;
         }
+        .logout-btn {
+          display: block;
+          margin: 0 auto;
+          padding: 10px 20px;
+          font-size: 1rem;
+          background-color: #f04e4e;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+         }
+
         .new-sensor-btn {
             background: #4bbfd6;
             color: #fff;
@@ -170,12 +182,14 @@
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
-            <a href="{{ route('alert-configuration') }}" class="{{ request()->routeIs('alert-configuration') ? 'active' : '' }}">
-                <i class="fas fa-bell"></i> Alert Configuration
-            </a>
+        
             <a href="{{ route('system-configuration') }}" class="{{ request()->routeIs('system-configuration') ? 'active' : '' }}">
                 <i class="fas fa-cog"></i> System Configuration
             </a>
+            <a href="{{ route('simulation.index') }}" class="{{ request()->routeIs('simulation.index') ? 'active' : '' }}">
+                 <i class="fas fa-cogs"></i> Simulation Control
+            </a>
+
             <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> User Management
             </a>

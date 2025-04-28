@@ -1,190 +1,7 @@
-@extends('layouts.app')
 
-@section('content')
-<div class="sidebar">
-    <div class="user-info">
-        <h4>Admin Dashboard</h4>
-        <span class="role">Administrator</span>
-    </div>
-    <nav>
-        <a href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
-        </a>
-        <a href="{{ route('alert-configuration') }}">
-            <i class="fas fa-bell"></i> Alert Configuration
-        </a>
-        <a href="{{ route('system-configuration') }}">
-            <i class="fas fa-cog"></i> System Configuration
-        </a>
-        <a href="{{ route('admin.users') }}" class="active">
-            <i class="fas fa-users"></i> User Management
-        </a>
-        <a href="{{ route('admin.reports') }}">
-            <i class="fas fa-chart-bar"></i> Reports
-        </a>
-    </nav>
-    <form method="POST" action="{{ route('logout') }}" style="width:100%;">
-        @csrf
-        <button type="submit" class="logout-btn">Log out</button>
-    </form>
-</div>
-
-<div class="main-content">
-    <div class="page-header">User Management</div>
-    
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    
-    @if(session('error'))
-        <div class="alert alert-error">
-            {{ session('error') }}
-        </div>
-    @endif
-    
-    <div class="user-actions">
-        <a href="{{ route('create_user') }}" class="add-user-btn">+ Add New User</a>
-        <div class="search-box">
-            <input type="text" placeholder="Search users..." id="userSearch" onkeyup="searchUsers()">
-            <i class="fas fa-search"></i>
-        </div>
-    </div>
-
-    <table class="users-table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="usersTableBody">
-            @foreach($users as $user)
-            <tr>
-                <td>{{ $user->username }}</td>
-                <td><span class="user-role">{{ $user->role }}</span></td>
-                <td>
-                    <a href="{{ route('admin.users.edit', $user->id) }}" class="action-btn">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="{{ route('admin.users.reset-password', $user->id) }}" class="action-btn">
-                        <i class="fas fa-key"></i>
-                    </a>
-                    <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="action-btn delete" onclick="return confirm('Are you sure you want to delete this user?')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-
-<!-- Add User Modal -->
-<div class="modal" id="addUserModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Add New User</h2>
-            <button class="close-modal" onclick="closeModal('addUserModal')">&times;</button>
-        </div>
-        <form action="{{ route('admin.users.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="role">Role</label>
-                <select name="role" id="role" required>
-                    <option value="MonitoringAdmin">MonitoringAdmin</option>
-                    <option value="WebMaster">WebMaster</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
-                <input type="password" name="password_confirmation" id="password_confirmation" required>
-            </div>
-            <div class="form-actions">
-                <button type="button" class="cancel-btn" onclick="closeModal('addUserModal')">Cancel</button>
-                <button type="submit" class="save-btn">Save User</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Edit User Modal -->
-<div class="modal" id="editUserModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Edit User</h2>
-            <button class="close-modal" onclick="closeModal('editUserModal')">&times;</button>
-        </div>
-        <form id="editUserForm" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="form-group">
-                <label for="edit_username">Username</label>
-                <input type="text" name="username" id="edit_username" required>
-            </div>
-            <div class="form-group">
-                <label for="edit_role">Role</label>
-                <select name="role" id="edit_role" required>
-                    <option value="MonitoringAdmin">MonitoringAdmin</option>
-                    <option value="WebMaster">WebMaster</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="edit_password">New Password (leave blank to keep current)</label>
-                <input type="password" name="password" id="edit_password">
-            </div>
-            <div class="form-actions">
-                <button type="button" class="cancel-btn" onclick="closeModal('editUserModal')">Cancel</button>
-                <button type="submit" class="save-btn">Update User</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Reset Password Modal -->
-<div class="modal" id="resetPasswordModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Reset Password</h2>
-            <button class="close-modal" onclick="closeModal('resetPasswordModal')">&times;</button>
-        </div>
-        <form id="resetPasswordForm" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="form-group">
-                <label for="new_password">New Password</label>
-                <input type="password" name="password" id="new_password" required>
-            </div>
-            <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
-                <input type="password" name="password_confirmation" id="password_confirmation" required>
-            </div>
-            <div class="form-actions">
-                <button type="button" class="cancel-btn" onclick="closeModal('resetPasswordModal')">Cancel</button>
-                <button type="submit" class="save-btn">Reset Password</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-@endsection
-
-@push('styles')
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<Html>
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -410,6 +227,17 @@
             gap: 16px;
             margin-top: 24px;
         }
+        .logout-btn {
+          display: block;
+          margin: 0 auto;
+          padding: 10px 20px;
+          font-size: 1rem;
+          background-color: #f04e4e;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+         }
         .cancel-btn {
             background: #f0f0f0;
             color: #222;
@@ -458,9 +286,186 @@
             }
         }
     </style>
-@endpush
+</head>
+<body>
+<div class="sidebar">
+    <div class="user-info">
+        <h4>Admin Dashboard</h4>
+        <span class="role">Administrator</span>
+    </div>
+    <nav>
+    <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="{{ route('system-configuration') }}" class="{{ request()->routeIs('system-configuration') ? 'active' : '' }}">
+            <i class="fas fa-cog"></i> System Configuration
+        </a>
+        <a href="{{ route('simulation.index') }}" class="{{ request()->routeIs('simulation.index') ? 'active' : '' }}">
+            <i class="fas fa-cogs"></i> Simulation Control
+        </a>
+        <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
+            <i class="fas fa-users"></i> User Management
+        </a>
+    </nav>
+    <form method="POST" action="{{ route('logout') }}" style="width:100%;">
+        @csrf
+        <button type="submit" class="logout-btn">Log out</button>
+    </form>
+</div>
 
-@push('scripts')
+<div class="main-content">
+    <div class="page-header">User Management</div>
+    
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    
+    @if(session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
+    @endif
+    
+    <div class="user-actions">
+        <a href="{{ route('create_user') }}" class="add-user-btn">+ Add New User</a>
+        <div class="search-box">
+            <input type="text" placeholder="Search users..." id="userSearch" onkeyup="searchUsers()">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <table class="users-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="usersTableBody">
+            @foreach($users as $user)
+            <tr>
+                <td>{{ $user->username }}</td>
+                <td><span class="user-role">{{ $user->role }}</span></td>
+                <td>
+                    <a href="{{ route('admin.users.edit', $user->id) }}" class="action-btn">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{{ route('admin.users.reset-password', $user->id) }}" class="action-btn">
+                        <i class="fas fa-key"></i>
+                    </a>
+                    <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="action-btn delete" onclick="return confirm('Are you sure you want to delete this user?')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="addUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Add New User</h2>
+            <button class="close-modal" onclick="closeModal('addUserModal')">&times;</button>
+        </div>
+        <form action="{{ route('admin.users.store') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select name="role" id="role" required>
+                    <option value="MonitoringAdmin">MonitoringAdmin</option>
+                    <option value="WebMaster">WebMaster</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="password_confirmation">Confirm Password</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('addUserModal')">Cancel</button>
+                <button type="submit" class="save-btn">Save User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal" id="editUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Edit User</h2>
+            <button class="close-modal" onclick="closeModal('editUserModal')">&times;</button>
+        </div>
+        <form id="editUserForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="edit_username">Username</label>
+                <input type="text" name="username" id="edit_username" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_role">Role</label>
+                <select name="role" id="edit_role" required>
+                    <option value="MonitoringAdmin">MonitoringAdmin</option>
+                    <option value="WebMaster">WebMaster</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="edit_password">New Password (leave blank to keep current)</label>
+                <input type="password" name="password" id="edit_password">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('editUserModal')">Cancel</button>
+                <button type="submit" class="save-btn">Update User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div class="modal" id="resetPasswordModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Reset Password</h2>
+            <button class="close-modal" onclick="closeModal('resetPasswordModal')">&times;</button>
+        </div>
+        <form id="resetPasswordForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="new_password">New Password</label>
+                <input type="password" name="password" id="new_password" required>
+            </div>
+            <div class="form-group">
+                <label for="password_confirmation">Confirm Password</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('resetPasswordModal')">Cancel</button>
+                <button type="submit" class="save-btn">Reset Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <script>
 function openAddUserModal() {
     document.getElementById('addUserModal').classList.add('show');
@@ -511,4 +516,5 @@ function searchUsers() {
     });
 @endif
 </script>
-@endpush
+</body>
+</Html>

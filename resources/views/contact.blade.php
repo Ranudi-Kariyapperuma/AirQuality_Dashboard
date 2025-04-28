@@ -34,7 +34,7 @@
 
         .contact-container {
             background: #ffffff;
-            padding: 40px 50px;
+            padding: 20px 50px;
             border-radius: 20px;
             box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
@@ -163,5 +163,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<footer class="bg-dark text-white mt-5 py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <h6 class="mb-1">&copy; {{ date('Y') }} Colombo Air Quality Monitoring System</h6>
+                        <small class="text-muted">Done By Group 62</small>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <p class="mb-0">Last updated: {{ now()->format('F j, Y \a\t h:i A') }}</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
 </body>
 </html>

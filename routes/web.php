@@ -8,6 +8,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\AqiDataExportController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SimulationController;  
+use App\Http\Controllers\AlertConfigController;
 
 
 /*
@@ -25,8 +27,11 @@ Route::get('/admin/sensors/create', [AdminController::class, 'createSensor'])->n
 Route::post('/admin/sensors', [AdminController::class, 'storeSensor'])->name('sensors.store');
 
 // Alert Configuration Routes
-Route::get('/admin/alert-configuration', [AdminController::class, 'alertConfiguration'])->name('alert-configuration');
-Route::post('/admin/alert-configuration', [AdminController::class, 'storeAlertConfiguration'])->name('alert-configuration.store');
+// Example for Alert Configuration Page
+Route::get('/alert-configuration', [AlertConfigurationController::class, 'index'])->name('alert-configuration');
+
+// If you have a form to save data
+Route::post('/alert-configuration', [AlertConfigurationController::class, 'store'])->name('alert-configuration.store');
 
 // System Configuration Routes
 Route::get('/admin/system-configuration', [AdminController::class, 'systemConfiguration'])->name('system-configuration');
@@ -65,3 +70,11 @@ Route::prefix('api')->group(function () {
     
 });
 Route::get('/dashboard', [SensorController::class, 'dashboard'])->name('dashboard');
+
+
+Route::get('/simulation', [SimulationController::class, 'index'])->name('simulation.index');
+Route::put('/simulation/update', [SimulationController::class, 'update'])->name('simulation.update');
+Route::post('/simulation/toggle', [SimulationController::class, 'toggle'])->name('simulation.toggle');
+
+Route::get('/alert-config', [AlertConfigController::class, 'index'])->name('alert-config');
+Route::post('/alert-config/save', [AlertConfigController::class, 'save'])->name('alert-config.save');
