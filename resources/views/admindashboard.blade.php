@@ -179,9 +179,7 @@
             <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> User Management
             </a>
-            <a href="{{ route('admin.reports') }}" class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">
-                <i class="fas fa-chart-bar"></i> Reports
-            </a>
+        
         </nav>
         <form method="POST" action="{{ route('logout') }}" style="width:100%;">
             @csrf

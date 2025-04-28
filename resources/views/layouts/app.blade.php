@@ -72,9 +72,6 @@
                             <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('reports') ? 'active' : '' }}" href="{{ url('/reports') }}">Reports</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a>
                         </li>
                         <li class="nav-item">

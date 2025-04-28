@@ -28,7 +28,6 @@
 
             <div class="hidden md:flex space-x-6">
                 <a class="nav-link {{ request()->is('/') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/') }}">Home</a>
-                <a class="nav-link {{ request()->is('reports') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/reports') }}">Reports</a>
                 <a class="nav-link {{ request()->is('about') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/about') }}">About</a>
                 <a class="nav-link {{ request()->is('contact') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/contact') }}">Contact</a>
                 <a class="nav-link {{ request()->is('login') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/login') }}">Login</a>
@@ -48,7 +47,6 @@
         
         <div id="mobile-menu" class="hidden md:hidden flex-col space-y-2 mt-4">
             <a class="block {{ request()->is('/') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/') }}">Home</a>
-            <a class="block {{ request()->is('reports') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/reports') }}">Reports</a>
             <a class="block {{ request()->is('about') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/about') }}">About</a>
             <a class="block {{ request()->is('contact') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/contact') }}">Contact</a>
             <a class="block {{ request()->is('login') ? 'text-[#1a2634] font-semibold' : 'text-[#2c3e50]' }} hover:text-[#1a2634]" href="{{ url('/login') }}">Login</a>
