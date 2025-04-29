@@ -193,6 +193,10 @@
             <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> User Management
             </a>
+
+            <a href="{{ route('alert-configuration') }}" class="{{ request()->routeIs('alert-configuration') ? 'active' : '' }}">
+                <i class="fas fa-bell"></i> Alert Configuration
+            </a>
         
         </nav>
         <form method="POST" action="{{ route('logout') }}" style="width:100%;">

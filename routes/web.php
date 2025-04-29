@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SimulationController;  
 use App\Http\Controllers\AlertConfigController;
+use App\Http\Controllers\Admin\AlertConfigurationController;
+
 
 
 /*
@@ -28,8 +30,11 @@ Route::post('/admin/sensors', [AdminController::class, 'storeSensor'])->name('se
 
 // Alert Configuration Routes
 // Example for Alert Configuration Page
-Route::get('/alert-configuration', [AlertConfigurationController::class, 'index'])->name('alert-configuration');
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/alert-configuration', [AlertConfigurationController::class, 'index'])->name('alert-configuration');
+    Route::post('/admin/alert-configuration', [AlertConfigurationController::class, 'store'])->name('alert-configuration.store');
+    Route::delete('/admin/alert-configuration/{id}', [AlertConfigurationController::class, 'destroy'])->name('alert-configuration.destroy');
+});
 // If you have a form to save data
 Route::post('/alert-configuration', [AlertConfigurationController::class, 'store'])->name('alert-configuration.store');
 

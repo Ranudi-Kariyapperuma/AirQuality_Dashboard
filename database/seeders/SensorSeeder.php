@@ -50,5 +50,18 @@ class SensorSeeder extends Seeder
         foreach ($sensors as $sensor) {
             Sensor::create($sensor);
         }
+
+        // Example: in AirQualityReading model observer or after seeding
+        $threshold = 150;
+        if ($reading->aqi > $threshold) {
+            \App\Models\Alert::create([
+                'sensor_id' => $reading->sensor_id,
+                'aqi' => $reading->aqi,
+                'message' => "High AQI detected at {$reading->sensor->name}: {$reading->aqi}",
+                'alerted_at' => $reading->created_at,
+            ]);
+        }
+
+        $alertsToday = \App\Models\Alert::whereDate('alerted_at', now()->toDateString())->count();
     }
 } 
