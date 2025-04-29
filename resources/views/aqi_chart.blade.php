@@ -10,7 +10,8 @@
 </head>
 <body>
 
-    <h1>Air Quality Index (Last 7 Days)</h1>
+    <h1><a href="{{ route('aqi.index') }}">
+    Air Quality Index (Last 7 Days)</a></h1>
 
     <canvas id="aqiChart" width="800" height="400"></canvas>
   

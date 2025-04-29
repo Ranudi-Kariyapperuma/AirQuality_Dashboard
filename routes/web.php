@@ -45,7 +45,8 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/aqi-chart', [AQIController::class, 'showAqiChart']);
 Route::get('/export-aqi-data', [AqiDataExportController::class, 'exportToJson']);
 Route::get('/export/csv', [AqiDataExportController::class, 'exportToCsv']);
-
+Route::get('/aqi-data', [AQIController::class, 'getAqiData']);
+Route::get('/aqi-chart', [AQIController::class, 'index'])->name('aqi.index');
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
