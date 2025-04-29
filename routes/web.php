@@ -8,6 +8,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\AqiDataExportController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SimulationController;  
+use App\Http\Controllers\AlertConfigController;
 
 
 /*
@@ -25,15 +27,26 @@ Route::get('/admin/sensors/create', [AdminController::class, 'createSensor'])->n
 Route::post('/admin/sensors', [AdminController::class, 'storeSensor'])->name('sensors.store');
 
 // Alert Configuration Routes
-Route::get('/admin/alert-configuration', [AdminController::class, 'alertConfiguration'])->name('alert-configuration');
-Route::post('/admin/alert-configuration', [AdminController::class, 'storeAlertConfiguration'])->name('alert-configuration.store');
+// Example for Alert Configuration Page
+Route::get('/alert-configuration', [AlertConfigurationController::class, 'index'])->name('alert-configuration');
+
+// If you have a form to save data
+Route::post('/alert-configuration', [AlertConfigurationController::class, 'store'])->name('alert-configuration.store');
 
 // System Configuration Routes
 Route::get('/admin/system-configuration', [AdminController::class, 'systemConfiguration'])->name('system-configuration');
 Route::post('/admin/system-configuration', [AdminController::class, 'storeSystemConfiguration'])->name('system-configuration.store');
 
 // User Management Routes
-Route::get('/admin/users', [AdminController::class, 'userManagement'])->name('admin.users');
+Route::get('/users', [AdminController::class, 'userManagement'])->name('admin.users');
+Route::get('/users/create', [AdminController::class, 'createUser'])->name('create_user');
+Route::post('/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+Route::get('/users/{id}/reset-password', [AdminController::class, 'resetUserPassword'])->name('admin.users.reset-password');
+Route::put('/users/{id}/password', [AdminController::class, 'updateUserPassword'])->name('admin.users.update-password');
+
 Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
 
 Route::get('/forget-password', [LoginController::class, 'forgetPassword']);
@@ -58,3 +71,11 @@ Route::prefix('api')->group(function () {
     
 });
 Route::get('/dashboard', [SensorController::class, 'dashboard'])->name('dashboard');
+
+
+Route::get('/simulation', [SimulationController::class, 'index'])->name('simulation.index');
+Route::put('/simulation/update', [SimulationController::class, 'update'])->name('simulation.update');
+Route::post('/simulation/toggle', [SimulationController::class, 'toggle'])->name('simulation.toggle');
+
+Route::get('/alert-config', [AlertConfigController::class, 'index'])->name('alert-config');
+Route::post('/alert-config/save', [AlertConfigController::class, 'save'])->name('alert-config.save');

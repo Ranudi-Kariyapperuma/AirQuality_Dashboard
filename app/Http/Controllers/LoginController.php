@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -14,18 +15,20 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $user = DB::table('users')->where('username', $request->username)->first();
+        // Get the user from the user_roles table
+        $user = DB::table('user_roles')->where('username', $request->username)->first();
 
-        if ($user && $request->password === $user->password) {
-            if ($user->username === 'admin') {
-                // Store username in session
-                session(['username' => $user->username]);
-                
-                // Get dashboard data
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Store username in session
+            session(['username' => $user->username]);
+
+            // Check user role
+            if ($user->role === 'MonitoringAdmin') {
+                // Admin dashboard logic
                 $totalSensors = \App\Models\Sensor::count();
                 $activeSensors = \App\Models\Sensor::where('is_active', true)->count();
-                $simulationStatus = 4; // Mocked, replace with real logic if available
-                $alertsToday = 0; // Mocked, replace with real logic if available
+                $simulationStatus = 4; // Mocked value, update if necessary
+                $alertsToday = 0; // Mocked value, update if necessary
 
                 // Mocked recent alerts
                 $recentAlerts = [
@@ -35,19 +38,14 @@ class LoginController extends Controller
                         'time' => '3:22 PM',
                     ],
                     [
-                        'message' => 'Sensor #123 is overheating',
+                        'message' => 'Sensor #456 is offline',
                         'link' => '#',
-                        'time' => '3:22 PM',
+                        'time' => '4:10 PM',
                     ],
                     [
-                        'message' => 'Sensor #123 is overheating',
+                        'message' => 'Sensor #789 has low battery',
                         'link' => '#',
-                        'time' => '3:22 PM',
-                    ],
-                    [
-                        'message' => 'Sensor #123 is overheating',
-                        'link' => '#',
-                        'time' => '3:22 PM',
+                        'time' => '5:45 PM',
                     ],
                 ];
 
@@ -62,10 +60,11 @@ class LoginController extends Controller
                     'sensors'
                 ));
             } else {
-                return back()->with('error', 'Access denied. Only admin can access the dashboard.');
+                // You can customize this to redirect based on different roles
+                return back()->with('error', 'Access denied. Only MonitoringAdmin can access the dashboard.');
             }
         } else {
-            return back()->with('error', 'Invalid username or password');
+            return back()->with('error', 'Invalid username or password.');
         }
     }
 
@@ -76,7 +75,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        // Clear the session
+        // Clear all session data
         $request->session()->flush();
         
         // Redirect to login page
