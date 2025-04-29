@@ -13,15 +13,10 @@
 
         <!-- Map Section -->
         <div class="map-section">
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" placeholder="Search for locations" class="location-search">
-                </div>
-            </div>
+           
             <iframe id="waqi-map" style="width: 100%; height: calc(100vh - 280px); border: none; border-radius: 12px; overflow: hidden;"
                     src="https://waqi.info/embed/widget/map/?token=31109acafdcb1b5a2715a9e66fbaed7ab9686b0f"></iframe>
-            <p class="refresh-text">Data refreshes every 5 minutes</p>
+           
         </div>
 
         <!-- Join with Us Section -->
