@@ -57,7 +57,7 @@
 </div>
 
 <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-    <a href="{{ route('about') }}">
+    <a href="{{ route('aqi.index') }}">
         <button style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
             View AQI Chart
         </button>
